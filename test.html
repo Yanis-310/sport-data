@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devenir sportif pro en France : le coût du rêve</title>
+    <link href="./style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <style>
+        .article-page {
+            max-width: 1100px;
+            margin: 30px auto 80px;
+            padding: 0 16px;
+            text-align: left;
+        }
+
+        .article-page header h1 {
+            font-size: 2rem;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        .kicker {
+            color: #d71900;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            font-size: .9rem;
+        }
+
+        .chapeau {
+            font-size: 1.1rem;
+            color: #4a5568;
+            margin: 12px 0 18px;
+        }
+
+        .meta-note {
+            color: #6b7280;
+            font-size: .9rem;
+            margin-bottom: 22px;
+        }
+
+        .article-page h2 {
+            font-size: 1.4rem;
+            margin: 28px 0 10px;
+        }
+
+        .article-page p {
+            color: #2d3748;
+            line-height: 1.7;
+            margin: 10px 0;
+        }
+
+        .callout {
+            background: #fff8f6;
+            border-left: 4px solid #d71900;
+            padding: 12px 14px;
+            border-radius: 8px;
+            color: #4a5568;
+            margin: 14px 0;
+        }
+
+        .figure {
+            margin: 26px 0;
+            background: #fff;
+            border: 1px solid #edf2f7;
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .figure h3 {
+            margin: 6px 0 12px;
+            font-size: 1rem;
+            color: #1f2937;
+        }
+
+        .caption {
+            color: #6b7280;
+            font-size: .9rem;
+            margin-top: 8px;
+        }
+
+        .stats-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 14px 0;
+        }
+
+        .stats-list .item {
+            background: #f8fafc;
+            border: 1px solid #edf2f7;
+            border-radius: 10px;
+            padding: 12px 14px;
+        }
+
+        .stats-list .num {
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: #0f172a;
+        }
+
+        @media (max-width: 800px) {
+            .stats-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <nav class="nav-topbar">
+        <div class="nav-topbar-inner">
+            <a href="./index.html" class="nav-logo">
+                <img src="./logo.png" alt="L'ÉQUIPE">
+            </a>
+            <div class="nav-right">
+                <a href="#subscribe" class="nav-btn-subscribe">s'abonner</a>
+                <a href="#login" class="nav-btn-login"><i class="far fa-user"></i> Se connecter</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="article-page">
+        <header>
+            <div class="kicker">Analyse</div>
+            <h1>Devenir sportif pro en France : le coût du rêve qui vous ruinera… ou vous enrichira !</h1>
+            <p class="chapeau">Football, basket, rugby, tennis… Tous font rêver, mais tous ne se valent pas. Découvrez
+                quel sport offre vraiment le meilleur retour sur investissement et vos chances réelles de passer
+                professionnel.</p>
+            <p class="meta-note"><i class="far fa-chart-bar"></i> Données issues de fédérations, presse spécialisée et
+                estimations conservatrices (2023–2025).</p>
+        </header>
+
+        <section>
+            <p>Le rêve de devenir sportif professionnel coûte cher… mais pas là où on l’imagine. En France, une pratique
+                intensive peut coûter de 350 € par an (football) à plus de 1 650 € (tennis). Pourtant, dépenser plus ne
+                signifie pas réussir davantage.</p>
+
+            <section class="figure">
+                <h3>Coût annuel vs probabilité de devenir pro (France) — « Payer plus » n'augmente pas les chances</h3>
+                <canvas id="scatterCostChance" height="240"></canvas>
+                <p class="caption">Le tennis est l'un des plus chers mais offre l'une des probabilités les plus faibles,
+                    quand le rugby reste peu coûteux et présente la meilleure chance de réussite.</p>
+            </section>
+
+            <p>Les chiffres surprennent : le rugby, l'un des sports les moins coûteux, offre la meilleure probabilité de
+                devenir pro (0,13 %), alors que le tennis, l’un des plus chers, plafonne à 0,027 %. Football et basket
+                restent extrêmement sélectifs, avec moins de 0,065 % de licenciés accédant au haut niveau, malgré un ROI
+                impressionnant, pouvant dépasser 1 371 € par euro investi pour un footballeur de Ligue 1. </p>
+
+            <p>En combinant coût, chance de succès et salaire potentiel, les sports collectifs médiatisés restent les
+                plus rentables financièrement. Mais les sports moins populaires offrent paradoxalement de meilleures
+                probabilités de réussite. Les sports individuels exigent un investissement massif pour un retour souvent
+                limité.</p>
+
+            <section class="figure">
+                <h3>Probabilité de devenir professionnel par sport (%)</h3>
+                <canvas id="barChancePro" height="280"></canvas>
+                <p class="caption">Le rugby domine avec 0,125–0,150 % de chances, suivi du handball. Les sports
+                    individuels (tennis, judo, natation) restent en bas du classement.</p>
+            </section>
+
+            <p class="callout">En définitive, le vrai prix du rêve sportif dépend du sport choisi : certains coûtent peu
+                mais offrent plus de chances, d’autres promettent des fortunes pour une poignée d’élus. Le rêve, lui,
+                reste intact mais il a toujours un prix.</p>
+        </section>
+
+
+        <section>
+            <h2>Sports collectifs vs sports individuels</h2>
+            <p>Les sports collectifs comme le football, le basket et le rugby regroupent le plus de licenciés, disposent
+                de davantage de places professionnelles et offrent les salaires les plus élevés. Leur coût d'accès
+                intensif reste relativement modéré, ce qui rend l'investissement plus rentable en cas de réussite.</p>
+            <p>À l'inverse, les sports individuels comme le tennis, le judo ou la natation présentent moins
+                d'opportunités professionnelles, des salaires généralement plus faibles et, parfois, des coûts de
+                formation plus élevés. La réussite y dépend davantage des performances internationales et du sponsoring.
+            </p>
+            <div class="stats-list">
+                <div class="item">
+                    <div class="num">Collectifs</div> ROI nettement plus favorable
+                </div>
+                <div class="item">
+                    <div class="num">Individuels</div> Investissements élevés, rentabilité incertaine
+                </div>
+                <div class="item">
+                    <div class="num">Modèles</div> Clubs & droits TV vs. sponsoring individuel
+                </div>
+            </div>
+        </section>
+
+        <section class="figure">
+            <h3>ROI sportif maximal estimé par discipline (€/€ investi – si pro)</h3>
+            <canvas id="barRoi" height="230"></canvas>
+            <p class="caption">Le football domine, devant le rugby et le basket. Les disciplines individuelles restent
+                loin derrière.</p>
+        </section>
+
+        <section>
+            <h2>À retenir</h2>
+            <p><strong>Payer plus ne veut pas dire réussir plus.</strong> Contrairement à l’idée reçue, les données
+                montrent <em>aucun lien</em> entre le coût annuel et la probabilité d’atteindre le haut niveau. Dans
+                certains cas, comme le tennis, les familles paient plus… pour moins de chances.</p>
+        </section>
+    </main>
+
+    <script>
+        // Données de coût moyen (approximation du milieu de fourchette) et probabilité (%)
+        const sports = [
+            { name: 'Rugby', cost: 660, chance: 0.13 },
+            { name: 'Handball', cost: 660, chance: 0.06 },
+            { name: 'Football', cost: 700, chance: 0.05 },
+            { name: 'Basket', cost: 660, chance: 0.03 },
+            { name: 'Tennis', cost: 1125, chance: 0.027 },
+            { name: 'Natation', cost: 875, chance: 0.024 },
+            { name: 'Judo', cost: 660, chance: 0.024 },
+        ];
+
+        // Scatter: coût vs chance
+        const ctxScatter = document.getElementById('scatterCostChance');
+        new Chart(ctxScatter, {
+            type: 'scatter',
+            data: {
+                datasets: sports.map((s, idx) => ({
+                    label: s.name,
+                    data: [{ x: s.cost, y: s.chance }],
+                    pointRadius: 12,
+                    pointHoverRadius: 16,
+                    pointBackgroundColor: ['#22c55e', '#10b981', '#3b82f6', '#ef4444', '#f59e0b', '#6b7280', '#111827'][idx],
+                    showLine: false,
+                }))
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: 'Coût annuel moyen (€)' } },
+                    y: { title: { display: true, text: 'Probabilité de devenir pro (%)' }, suggestedMax: 0.15 }
+                },
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.x} € / ${ctx.raw.y}%`
+                        }
+                    }
+                }
+            }
+        });
+
+        // Bar: ROI max (approximations hautes du tableau)
+        const roiLabels = ['Football L1', 'Rugby', 'Basket', 'Handball', 'Tennis', 'Judo', 'Natation'];
+        const roiMax = [1371, 626, 486, 211, 100, 52, 53];
+        const ctxBar = document.getElementById('barRoi');
+        new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: roiLabels, datasets: [{
+                    label: '€ gagnés par € investi (max si pro)',
+                    data: roiMax,
+                    backgroundColor: '#d71900'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { title: { display: true, text: '€/€ investi' } } }
+            }
+        });
+
+        // Graphique complet : Licenciés, Pros estimés et Chances de devenir pro
+        const chanceLabels = ['Rugby', 'Handball', 'Football', 'Basket', 'Tennis', 'Natation', 'Judo'];
+
+        // Données exactes du tableau
+        const licencies = [400000, 591218, 2300855, 725550, 1115000, 411992, 532190]; // en unités
+        const prosEstimes = [550, 350, 1250, 250, 300, 100, 125]; // valeurs moyennes des fourchettes
+        const chanceValues = [0.1375, 0.0595, 0.054, 0.0345, 0.027, 0.024, 0.0235]; // %
+
+        // Couleurs différentes pour chaque sport
+        const colors = [
+            '#22c55e', // Rugby - vert
+            '#10b981', // Handball - vert émeraude
+            '#3b82f6', // Football - bleu
+            '#ef4444', // Basket - rouge
+            '#f59e0b', // Tennis - orange
+            '#06b6d4', // Natation - cyan
+            '#8b5cf6'  // Judo - violet
+        ];
+
+        const ctxChance = document.getElementById('barChancePro');
+        new Chart(ctxChance, {
+            type: 'bar',
+            data: {
+                labels: chanceLabels,
+                datasets: [
+                    {
+                        label: 'Licenciés (en milliers)',
+                        data: licencies.map(v => v / 1000),
+                        backgroundColor: colors,
+                        yAxisID: 'y',
+                        order: 2
+                    },
+                    {
+                        label: 'Pros estimés',
+                        data: prosEstimes,
+                        backgroundColor: colors.map(c => c + 'CC'), // Légèrement transparent
+                        yAxisID: 'y',
+                        order: 2
+                    },
+                    {
+                        label: '% chance de devenir pro',
+                        data: chanceValues,
+                        type: 'line',
+                        borderColor: '#d71900',
+                        backgroundColor: 'rgba(215, 25, 0, 0.1)',
+                        borderWidth: 3,
+                        fill: false,
+                        yAxisID: 'y1',
+                        pointRadius: 8,
+                        pointHoverRadius: 10,
+                        pointBackgroundColor: colors,
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        order: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                if (context.datasetIndex === 0) {
+                                    return `Licenciés: ${context.parsed.y.toLocaleString('fr-FR', { maximumFractionDigits: 1 })} K`;
+                                } else if (context.datasetIndex === 1) {
+                                    return `Pros estimés: ${context.parsed.y}`;
+                                } else {
+                                    return `Chance: ${context.parsed.y.toFixed(3)} %`;
+                                }
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Licenciés (K) / Pros estimés',
+                            color: '#4a5568'
+                        },
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#4a5568',
+                            callback: function (value) {
+                                if (value >= 1000) {
+                                    return (value / 1000).toFixed(1) + 'K';
+                                }
+                                return value;
+                            }
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Probabilité de devenir pro (%)',
+                            color: '#d71900'
+                        },
+                        beginAtZero: true,
+                        grid: {
+                            drawOnChartArea: false
+                        },
+                        ticks: {
+                            color: '#d71900',
+                            callback: function (value) {
+                                return value.toFixed(3) + ' %';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
