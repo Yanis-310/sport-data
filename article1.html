@@ -106,6 +106,101 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .related-articles {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 2px solid #e6e9ef;
+        }
+
+        .related-articles h2 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #111;
+        }
+
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .related-card {
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .related-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .related-card .media {
+            display: block;
+            aspect-ratio: 16/10;
+            background: #e9ecef;
+        }
+
+        .related-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .related-card .content {
+            padding: 12px 14px 10px;
+        }
+
+        .related-card .category {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #657286;
+            font-size: 0.8rem;
+            margin-bottom: 6px;
+        }
+
+        .related-card .category .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #ffb100;
+            display: inline-block;
+        }
+
+        .related-card .title {
+            font-size: 0.95rem;
+            line-height: 1.3;
+            margin: 2px 0 6px;
+        }
+
+        .related-card .title a {
+            color: #111;
+            text-decoration: none;
+        }
+
+        .related-card .title a:hover {
+            text-decoration: underline;
+        }
+
+        .related-card .excerpt {
+            color: #4a5668;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 640px) {
+            .related-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
@@ -114,7 +209,7 @@
     <nav class="nav-topbar">
         <div class="nav-topbar-inner">
             <a href="./index.html" class="nav-logo">
-                <img src="./logo.png" alt="L'ÉQUIPE">
+                <img src="/LOGO-SPORT-AREA-V2.png" alt="L'ÉQUIPE">
             </a>
             <div class="nav-right">
                 <a href="#subscribe" class="nav-btn-subscribe">s'abonner</a>
@@ -200,9 +295,40 @@
 
         <section>
             <h2>À retenir</h2>
-            <p><strong>Payer plus ne veut pas dire réussir plus.</strong> Contrairement à l’idée reçue, les données
-                montrent <em>aucun lien</em> entre le coût annuel et la probabilité d’atteindre le haut niveau. Dans
+            <p><strong>Payer plus ne veut pas dire réussir plus.</strong> Contrairement à l'idée reçue, les données
+                montrent <em>aucun lien</em> entre le coût annuel et la probabilité d'atteindre le haut niveau. Dans
                 certains cas, comme le tennis, les familles paient plus… pour moins de chances.</p>
+        </section>
+
+        <section class="related-articles">
+            <h2>Articles qui pourraient vous intéresser</h2>
+            <div class="related-grid">
+                <article class="related-card">
+                    <a class="media" href="./article2.html" aria-label="Lire l'article sur les centres de formation">
+                        <img src="./pexels-markusspiske-114296.jpg" alt="Jeunes footballeurs en formation">
+                    </a>
+                    <div class="content">
+                        <div class="category"><span class="dot"></span><span>Formation, Football</span></div>
+                        <h3 class="title"><a href="./article2.html">Accès aux centres de formation : pourquoi le
+                                football français sélectionne-t-il si peu de ses jeunes licenciés ?</a></h3>
+                        <p class="excerpt">Sur 1,5 million de jeunes licenciés, seuls 980 entrent en structures de
+                            formation et 130 deviennent professionnels.</p>
+                    </div>
+                </article>
+
+                <article class="related-card">
+                    <a class="media" href="./article3.html" aria-label="Lire l'article sur la génération canapé">
+                        <img src="./pexels-amar-19786212.jpg" alt="Jeunes et écrans">
+                    </a>
+                    <div class="content">
+                        <div class="category"><span class="dot"></span><span>Santé, Jeunesse</span></div>
+                        <h3 class="title"><a href="./article3.html">La génération canapé: les jeunes bougeront-ils assez
+                                pour éviter le pire ?</a></h3>
+                        <p class="excerpt">73 % des 11-17 ans ne bougent pas assez selon l'OMS. Les écrans et la
+                            sédentarité menacent la santé des jeunes.</p>
+                    </div>
+                </article>
+            </div>
         </section>
     </main>
 
