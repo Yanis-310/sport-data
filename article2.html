@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accès aux centres de formation : pourquoi le football français sélectionne-t-il si peu de ses jeunes
-        licenciés ?</title>
+    <title>Accéder au haut niveau : les régions où les jeunes ont le plus de chances</title>
     <link href="./style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         .article-page {
             max-width: 1100px;
@@ -47,12 +47,6 @@
             margin: 28px 0 10px;
         }
 
-        .article-page h3 {
-            font-size: 1.2rem;
-            margin: 24px 0 8px;
-            color: #1f2937;
-        }
-
         .article-page p {
             color: #2d3748;
             line-height: 1.7;
@@ -88,23 +82,93 @@
             margin-top: 8px;
         }
 
-        .source-note {
-            color: #9ca3af;
-            font-size: 0.85rem;
-            font-style: italic;
-            margin-top: 8px;
+        #chart_div {
+            width: 100%;
+            height: 600px;
+            margin: 20px 0;
         }
 
-        .definition {
-            background: #f8fafc;
-            border-left: 3px solid #3b82f6;
-            padding: 10px 12px;
-            margin: 12px 0;
-            border-radius: 4px;
+        #map {
+            height: 600px;
+            width: 100%;
+            margin: 20px 0;
+            border: 1px solid #edf2f7;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
-        .definition strong {
+        .map-legend {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            font-size: 12px;
+            min-width: 200px;
+        }
+
+        .map-legend h4 {
+            margin: 0 0 10px 0;
+            font-size: 13px;
+            font-weight: 700;
             color: #1f2937;
+        }
+
+        .legend-scale {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .legend-gradient {
+            height: 20px;
+            flex: 1;
+            border-radius: 4px;
+            background: linear-gradient(to right, #dc2626, #f59e0b, #22c55e);
+        }
+
+        .legend-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .leaflet-popup-content {
+            margin: 15px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .leaflet-popup-content strong {
+            color: #d71900;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .leaflet-popup-content p {
+            margin: 4px 0;
+            color: #4a5568;
+        }
+
+        .figure-footer {
+            text-align: center;
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 10px;
+            line-height: 1.4;
         }
 
         .related-articles {
@@ -196,13 +260,33 @@
             margin-bottom: 0;
         }
 
+        @media (max-width: 800px) {
+            #chart_div {
+                height: 500px;
+            }
+
+            #map {
+                height: 500px;
+            }
+        }
+
         @media (max-width: 640px) {
             .related-grid {
                 grid-template-columns: 1fr;
             }
+
+            #chart_div {
+                height: 400px;
+            }
+
+            #map {
+                height: 400px;
+            }
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -221,72 +305,54 @@
     <main class="article-page">
         <header>
             <div class="kicker">Formation</div>
-            <h1>Accès aux centres de formation : pourquoi le football français sélectionne-t-il si peu de ses jeunes
-                licenciés ?</h1>
-            <p class="chapeau">En 2023, la France comptait 2,2 millions de licenciés FFF, dont 1,5 million de jeunes
-                (U6→U19). Parmi eux, 980 entrent en centres ou pôles espoirs et 130 signent un contrat professionnel,
-                soit respectivement 0,065 % et 0,009 % des jeunes. Les centres offrent un rendement de 18 %, mais
-                l'accès au haut niveau reste extrêmement sélectif.</p>
-            <p class="meta-note"><i class="far fa-chart-bar"></i> Sources : INJEP, Recensement licences 2023 ; FFF, Les
-                chiffres de la formation française 2023.</p>
+            <h1>Accéder au haut niveau : les régions où les jeunes ont le plus de chances d'intégrer un centre de
+                formation</h1>
+            <p class="chapeau">En France, le rêve de devenir footballeur professionnel passe presque obligatoirement par
+                un centre de formation agréé. Pourtant, selon la région où il évolue, un jeune licencié n'a pas les
+                mêmes chances d'y accéder.</p>
         </header>
 
         <section>
-            <p>Ce contraste montre un fort embouteillage : la majorité des jeunes n'atteint pas la formation
-                professionnelle. Cette situation s'explique par le vivier immense, la capacité limitée des structures et
-                la nécessité pour les clubs de sélectionner les profils les plus prometteurs. Ainsi, seuls quelques
-                joueurs par génération franchissent toutes les étapes jusqu'au professionnalisme.</p>
+            <p>Les données de la FFF pour l'année 2023 montrent un écart important entre le nombre de joueurs inscrits
+                et les infrastructures disponibles. Certaines régions disposent de nombreux jeunes mais très peu de
+                centres, ce qui crée une forte concurrence et réduit les perspectives d'accès au haut niveau. D'autres
+                régions, avec un meilleur équilibre, offrent des conditions plus favorables. Cette répartition inégale
+                interroge sur l'égalité des chances dans le sport français.</p>
 
             <section class="figure">
-                <h3>Répartition des licences FFF (2023), estimation par catégorie</h3>
-                <canvas id="pieRepartition" height="280"></canvas>
-                <p class="caption">La majorité des licenciés français sont des jeunes (U6→U19). Les séniors et vétérans
-                    complètent le total de 2,2 millions de joueurs.</p>
-                <p class="source-note">Source : INJEP, Recensement licences 2023</p>
-            </section>
-
-            <section>
-                <h3>Définitions</h3>
-                <div class="definition">
-                    <p><strong>Séniors :</strong> ce sont les joueurs adultes, généralement de plus de 18 ans jusqu'à
-                        35–40 ans selon les compétitions.</p>
-                    <p>→ C'est la catégorie la plus courante en football amateur adulte.</p>
-                </div>
-                <div class="definition">
-                    <p><strong>Vétérans :</strong> ce sont les joueurs plus âgés, souvent à partir de 35 ans et jusqu'à
-                        50–60 ans.</p>
-                    <p>→ Les compétitions sont adaptées au rythme et à la pratique loisir.</p>
+                <h3>Jeunes licenciés FFF et centres de formation certifiés FFF par région (2023)</h3>
+                <div id="chart_div"></div>
+                <p class="caption">Ce graphique compare le nombre total de jeunes licenciés U6-U19 au nombre de centres
+                    de formation disponibles dans chaque région. Lorsque la barre représentant les joueurs est beaucoup
+                    plus haute que celle des centres, la sélection devient très compétitive.</p>
+                <div class="figure-footer">
+                    Sources : Fédération Française de Football (FFF), Statistiques des licences par région – 2023 et
+                    liste des centres de formation agréés.<br>
+                    Ministère des Sports et INJEP, rapports sur l'accès à la performance sportive en France.<br>
+                    Consultations complémentaires : L'Équipe, SoFoot (contexte journalistique).
                 </div>
             </section>
 
             <section class="figure">
-                <h3>Du vivier aux pros - 2023</h3>
-                <canvas id="barVivierPros" height="280"></canvas>
-                <p class="caption">Sur 1,5 million de jeunes licenciés, seuls 980 entrent en structures de formation et
-                    130 deviennent professionnels. L'échelle logarithmique illustre la chute drastique vers le haut
-                    niveau.</p>
-                <p class="source-note">Sources : FFF, Les chiffres de la formation française 2023 ; INJEP, Recensement
-                    licences 2023</p>
+                <h3>Pourcentage de jeunes licenciés FFF intégrant un centre de formation par région (2023)</h3>
+                <div id="map"></div>
+                <p class="caption">Cette carte indique, en pourcentage, la probabilité estimée pour un jeune licencié
+                    d'intégrer un centre de formation dans sa région. Plus le pourcentage est faible, plus l'accès au
+                    haut niveau est difficile, malgré le talent ou l'investissement des joueurs.</p>
+                <div class="figure-footer">
+                    Sources : Fédération Française de Football (FFF), Statistiques des licences par région – 2023 et
+                    liste des centres de formation agréés.<br>
+                    Ministère des Sports et INJEP, rapports sur l'accès à la performance sportive en France.<br>
+                    Consultations complémentaires : L'Équipe, SoFoot (contexte journalistique).
+                </div>
             </section>
 
-            <section class="figure">
-                <h3>Part des jeunes licenciés qui accèdent aux structures de formation (par génération) 2023</h3>
-                <canvas id="pieFormation" height="280"></canvas>
-                <p class="caption">Seule une infime fraction des jeunes (0,065 %) accède aux centres ou pôles espoirs,
-                    montrant le goulot d'étranglement dans la formation.</p>
-                <p class="source-note">Sources : FFF, Les chiffres de la formation française 2023 ; INJEP, Recensement
-                    licences 2023</p>
-            </section>
-
-            <section class="figure">
-                <h3>Taux de passage - 2023</h3>
-                <canvas id="barTauxPassage" height="280"></canvas>
-                <p class="caption">Le taux de passage diminue fortement à chaque étape : 0,065 % des jeunes entrent en
-                    formation, 18 % de ces derniers signent un contrat professionnel, soit 0,009 % du total des jeunes
-                    licenciés.</p>
-                <p class="source-note">Sources : FFF, Les chiffres de la formation française 2023 ; INJEP, Recensement
-                    licences 2023</p>
-            </section>
+            <p>Les inégalités d'accès aux centres de formation s'expliquent avant tout par une répartition déséquilibrée
+                des clubs professionnels sur le territoire. Les régions où ils sont nombreux, comme les Hauts-de-France
+                ou la Bretagne, offrent plus de places et donc davantage de chances. À l'inverse, dans des zones très
+                peuplées mais avec peu de centres comme l'Île-de-France, beaucoup de jeunes se retrouvent en
+                concurrence. Selon l'endroit où il grandit, un joueur ne bénéficie donc pas des mêmes opportunités
+                d'atteindre le haut niveau.</p>
         </section>
 
         <section class="related-articles">
@@ -297,7 +363,7 @@
                         <img src="./pexels-bk-aguilar-296797-945471.jpg" alt="Sportif professionnel">
                     </a>
                     <div class="content">
-                        <div class="category"><span class="dot"></span><span>Analyse, Sport</span></div>
+                        <div class="category"><span class="dot"></span><span>Analyse, Financement</span></div>
                         <h3 class="title"><a href="./article1.html">Devenir sportif pro en France : le coût du rêve qui
                                 vous ruinera… ou vous enrichira !</a></h3>
                         <p class="excerpt">Découvrez quel sport offre vraiment le meilleur retour sur investissement et
@@ -321,132 +387,229 @@
         </section>
     </main>
 
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Région', 'Jeunes licenciés', 'Centres de formation certifiés FFF', { role: 'annotation' }],
+                ['Hauts-de-France', 190000, 5, '5'],
+                ['Occitanie', 170000, 4, '4'],
+                ['Bretagne', 130000, 3, '3'],
+                ['Auvergne-Rhône-Alpes', 200000, 5, '5'],
+                ['Nouvelle-Aquitaine', 180000, 4, '4'],
+                ['Pays de la Loire', 140000, 3, '3'],
+                ['Île-de-France', 300000, 6, '6'],
+                ['Provence-Alpes-Côte d\'Azur', 150000, 3, '3'],
+                ['Normandie', 110000, 2, '2'],
+                ['Grand Est', 160000, 3, '3'],
+                ['Centre-Val de Loire', 60000, 1, '1'],
+                ['Bourgogne-Franche-Comté', 70000, 1, '1']
+            ]);
+
+            var options = {
+                title: 'Jeunes licenciés FFF et centres de formation certifiés FFF par région (2023)',
+                titleTextStyle: { fontSize: 18, bold: true, color: '#1f2937' },
+                series: {
+                    0: {
+                        targetAxisIndex: 0,
+                        color: '#3b82f6'
+                    },
+                    1: {
+                        targetAxisIndex: 1,
+                        color: '#d71900'
+                    }
+                },
+                vAxes: {
+                    0: {
+                        title: 'Jeunes licenciés',
+                        minValue: 0,
+                        titleTextStyle: { bold: true, color: '#4a5568' },
+                        textStyle: { color: '#6b7280' }
+                    },
+                    1: {
+                        title: 'Centres de formation certifiés FFF',
+                        minValue: 0,
+                        titleTextStyle: { bold: true, color: '#4a5568' },
+                        textStyle: { color: '#6b7280' }
+                    }
+                },
+                hAxis: {
+                    title: 'Régions',
+                    titleTextStyle: { bold: true, color: '#4a5568' },
+                    textStyle: { color: '#6b7280' },
+                    slantedText: true,
+                    slantedTextAngle: 45
+                },
+                legend: {
+                    position: 'top',
+                    textStyle: { color: '#4a5568' }
+                },
+                bar: { groupWidth: '60%' },
+                annotations: { alwaysOutside: true },
+                backgroundColor: 'transparent',
+                chartArea: {
+                    left: 100,
+                    top: 80,
+                    right: 100,
+                    bottom: 120,
+                    width: '100%',
+                    height: '70%'
+                }
+            };
+
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+
+            // Redimensionner le graphique lors du redimensionnement de la fenêtre
+            window.addEventListener('resize', function () {
+                chart.draw(data, options);
+            });
+        }
+    </script>
+
     <script>
-        // Graphique 1: Répartition des licences FFF (camembert)
-        const ctxPieRepartition = document.getElementById('pieRepartition');
-        new Chart(ctxPieRepartition, {
-            type: 'pie',
-            data: {
-                labels: ['Jeunes (U6-U19)', 'Séniors', 'Vétérans'],
-                datasets: [{
-                    data: [67.7, 27.1, 5.2],
-                    backgroundColor: ['#06b6d4', '#3b82f6', '#1e40af']
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { position: 'bottom' },
-                    tooltip: {
-                        callbacks: {
-                            label: (ctx) => `${ctx.label}: ${ctx.parsed}%`
-                        }
-                    }
-                }
-            }
-        });
+        var map = L.map('map', {
+            zoomControl: true,
+            scrollWheelZoom: true
+        }).setView([46.5, 2.5], 6);
 
-        // Graphique 2: Du vivier aux pros (barres avec échelle logarithmique)
-        const ctxBarVivier = document.getElementById('barVivierPros');
-        new Chart(ctxBarVivier, {
-            type: 'bar',
-            data: {
-                labels: ['Jeunes licenciés\n(U6-U19)', 'Entrent en structure\nde formation\n(par génération)', 'Signent un contrat\npro (par génération)'],
-                datasets: [{
-                    label: 'Nombre de joueurs',
-                    data: [1500000, 980, 130],
-                    backgroundColor: '#06b6d4'
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: (ctx) => `${ctx.parsed.y.toLocaleString('fr-FR')} joueurs`
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        type: 'logarithmic',
-                        title: { display: true, text: 'Nombre de joueurs (échelle logarithmique)' },
-                        ticks: {
-                            callback: function (value) {
-                                if (value >= 1000000) return (value / 1000000).toFixed(1) + 'M';
-                                if (value >= 1000) return (value / 1000).toFixed(0) + 'K';
-                                return value;
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        // Style de carte plus moderne (CartoDB Positron)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
 
-        // Graphique 3: Part des jeunes en formation (camembert)
-        const ctxPieFormation = document.getElementById('pieFormation');
-        new Chart(ctxPieFormation, {
-            type: 'pie',
-            data: {
-                labels: ['Accèdent aux structures de formation', 'Reste du vivier jeune'],
-                datasets: [{
-                    data: [980, 1499999],
-                    backgroundColor: ['#d71900', '#06b6d4']
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { position: 'bottom' },
-                    tooltip: {
-                        callbacks: {
-                            label: (ctx) => {
-                                const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                const percentage = ((ctx.parsed / total) * 100).toFixed(4);
-                                return `${ctx.label}: ${ctx.parsed.toLocaleString('fr-FR')} (${percentage}%)`;
-                            }
-                        }
-                    }
-                }
-            }
-        });
+        var regionsData = {
+            "Hauts-de-France": { licenciés: 190000, centres: 5, pourcentage: 0.002632 },
+            "Occitanie": { licenciés: 170000, centres: 4, pourcentage: 0.002353 },
+            "Bretagne": { licenciés: 130000, centres: 3, pourcentage: 0.002308 },
+            "Auvergne-Rhône-Alpes": { licenciés: 200000, centres: 5, pourcentage: 0.002500 },
+            "Nouvelle-Aquitaine": { licenciés: 180000, centres: 4, pourcentage: 0.002222 },
+            "Pays de la Loire": { licenciés: 140000, centres: 3, pourcentage: 0.002143 },
+            "Île-de-France": { licenciés: 300000, centres: 6, pourcentage: 0.002000 },
+            "Provence-Alpes-Côte d'Azur": { licenciés: 150000, centres: 3, pourcentage: 0.002000 },
+            "Normandie": { licenciés: 110000, centres: 2, pourcentage: 0.001818 },
+            "Grand Est": { licenciés: 160000, centres: 3, pourcentage: 0.001875 },
+            "Centre-Val de Loire": { licenciés: 60000, centres: 1, pourcentage: 0.001667 },
+            "Bourgogne-Franche-Comté": { licenciés: 70000, centres: 1, pourcentage: 0.001429 }
+        };
 
-        // Graphique 4: Taux de passage (barres)
-        const ctxBarTaux = document.getElementById('barTauxPassage');
-        new Chart(ctxBarTaux, {
-            type: 'bar',
-            data: {
-                labels: ['Jeunes → Centres (%)', 'Centres → Contrat pro (%)', 'Jeunes → Contrat pro (%)'],
-                datasets: [{
-                    label: 'Taux de passage (%)',
-                    data: [0.0653, 13.27, 0.0087],
-                    backgroundColor: '#d71900'
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: (ctx) => `${ctx.parsed.y.toFixed(4)}%`
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        title: { display: true, text: 'Pourcentage (%)' },
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function (value) {
-                                return value.toFixed(2) + '%';
-                            }
-                        }
-                    }
-                }
+        function getColor(p) {
+            var min = 0.001429;
+            var max = 0.002632;
+            var ratio = (p - min) / (max - min);
+
+            // Dégradé de rouge (faible) à orange (moyen) à vert (élevé)
+            if (ratio < 0.5) {
+                // Rouge vers Orange
+                var localRatio = ratio * 2;
+                var r = 220;
+                var g = Math.round(38 + (158 - 38) * localRatio);
+                var b = 38;
+            } else {
+                // Orange vers Vert
+                var localRatio = (ratio - 0.5) * 2;
+                var r = Math.round(220 - (220 - 34) * localRatio);
+                var g = Math.round(158 + (197 - 158) * localRatio);
+                var b = Math.round(38 + (34 - 38) * localRatio);
             }
-        });
+            return `rgb(${r},${g},${b})`;
+        }
+
+        // Créer la légende
+        var legend = L.control({ position: 'bottomright' });
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'map-legend');
+            div.innerHTML = `
+                <h4>Probabilité d'accès</h4>
+                <div class="legend-scale">
+                    <div class="legend-gradient"></div>
+                </div>
+                <div class="legend-labels">
+                    <span>0.14%</span>
+                    <span>0.26%</span>
+                </div>
+            `;
+            return div;
+        };
+        legend.addTo(map);
+
+        axios.get('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/regions.geojson')
+            .then(function (response) {
+                var geojson = response.data;
+
+                L.geoJson(geojson, {
+                    style: function (feature) {
+                        var name = feature.properties.nom;
+                        var p = regionsData[name] ? regionsData[name].pourcentage : 0.0015;
+                        return {
+                            color: '#ffffff',
+                            weight: 2.5,
+                            fillColor: getColor(p),
+                            fillOpacity: 0.75,
+                            dashArray: '0'
+                        };
+                    },
+                    onEachFeature: function (feature, layer) {
+                        var name = feature.properties.nom;
+                        var data = regionsData[name];
+                        if (data) {
+                            var popupContent = `
+                                <div style="font-family: Arial, sans-serif;">
+                                    <strong style="color: #d71900; font-size: 15px; display: block; margin-bottom: 10px; border-bottom: 2px solid #e6e9ef; padding-bottom: 6px;">${name}</strong>
+                                    <p style="margin: 6px 0; color: #4a5568;">
+                                        <span style="font-weight: 600; color: #1f2937;">Jeunes licenciés:</span><br>
+                                        <span style="font-size: 16px; color: #3b82f6; font-weight: 700;">${data.licenciés.toLocaleString('fr-FR')}</span>
+                                    </p>
+                                    <p style="margin: 6px 0; color: #4a5568;">
+                                        <span style="font-weight: 600; color: #1f2937;">Centres de formation:</span><br>
+                                        <span style="font-size: 16px; color: #d71900; font-weight: 700;">${data.centres}</span>
+                                    </p>
+                                    <p style="margin: 8px 0 0 0; padding-top: 8px; border-top: 1px solid #e6e9ef; color: #4a5568;">
+                                        <span style="font-weight: 600; color: #1f2937;">Probabilité d'accès:</span><br>
+                                        <span style="font-size: 18px; color: #22c55e; font-weight: 700;">${(data.pourcentage * 100).toFixed(4)} %</span>
+                                    </p>
+                                </div>
+                            `;
+                            layer.bindPopup(popupContent, {
+                                maxWidth: 250,
+                                className: 'custom-popup'
+                            });
+                        } else {
+                            layer.bindPopup(`<strong>${name}</strong><br>Pas de données disponibles`);
+                        }
+                        layer.on({
+                            mouseover: function (e) {
+                                var layer = e.target;
+                                layer.setStyle({
+                                    weight: 4,
+                                    fillOpacity: 0.9,
+                                    color: '#1f2937'
+                                });
+                                if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                                    layer.bringToFront();
+                                }
+                            },
+                            mouseout: function (e) {
+                                var geojsonLayer = e.target;
+                                var name = geojsonLayer.feature.properties.nom;
+                                var p = regionsData[name] ? regionsData[name].pourcentage : 0.0015;
+                                geojsonLayer.setStyle({
+                                    weight: 2.5,
+                                    fillOpacity: 0.75,
+                                    color: '#ffffff'
+                                });
+                            }
+                        });
+                    }
+                }).addTo(map);
+            })
+            .catch(function (error) {
+                console.error('Erreur lors du chargement de la carte:', error);
+            });
     </script>
 </body>
 
