@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Sport Area</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link href="./style.css" rel="stylesheet">
+    <style>
+        .login-container {
+            max-width: 450px;
+            margin: 120px auto 60px;
+            padding: 40px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            font-size: 2rem;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #d71900;
+        }
+
+        .login-btn {
+            padding: 12px 24px;
+            background: #d71900;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: #b81500;
+        }
+
+        .login-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .register-link a {
+            color: #d71900;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .demo-info {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: #1e40af;
+        }
+
+        .demo-info strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav-topbar">
+        <div class="nav-topbar-inner">
+            <a href="./index.html" class="nav-logo">
+                <img src="/LOGO-SPORT-AREA-V2.png" alt="Sport Area">
+            </a>
+            <div class="nav-right">
+                <a href="./index.html#subscribe" class="nav-btn-subscribe">s'abonner</a>
+                <a href="./login.html" class="nav-btn-login"><i class="far fa-user"></i> Se connecter</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="login-container">
+        <div class="login-header">
+            <h1>Connexion</h1>
+            <p>Connectez-vous à votre compte Sport Area</p>
+        </div>
+
+        <div class="demo-info">
+            <strong>Compte de démonstration :</strong>
+            Email: demo@sportarea.fr<br>
+            Mot de passe: demo123
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="votre@email.com">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" required placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">
+                Se connecter
+            </button>
+        </form>
+
+        <div class="register-link">
+            Pas encore de compte ? <a href="#" onclick="alert('Fonctionnalité à venir !'); return false;">Créer un compte</a>
+        </div>
+    </div>
+
+    <script>
+        // Gestion de l'authentification
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const loginBtn = document.getElementById('loginBtn');
+
+        // Compte de démonstration
+        const demoAccount = {
+            email: 'demo@sportarea.fr',
+            password: 'demo123'
+        };
+
+        // Vérifier si l'utilisateur est déjà connecté
+        function checkAuth() {
+            const user = localStorage.getItem('sportAreaUser');
+            if (user) {
+                window.location.href = './index.html';
+            }
+        }
+
+        // Fonction de connexion
+        function login(email, password) {
+            // Vérification simple (en production, cela serait fait côté serveur)
+            if (email === demoAccount.email && password === demoAccount.password) {
+                const userData = {
+                    email: email,
+                    name: 'Utilisateur Demo',
+                    loginTime: new Date().toISOString()
+                };
+                localStorage.setItem('sportAreaUser', JSON.stringify(userData));
+                return true;
+            }
+            return false;
+        }
+
+        // Gestion du formulaire
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Désactiver le bouton
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Connexion...';
+
+            // Simuler un délai de connexion
+            setTimeout(() => {
+                if (login(email, password)) {
+                    // Redirection vers la page d'accueil
+                    window.location.href = './index.html';
+                } else {
+                    // Afficher l'erreur
+                    errorMessage.textContent = 'Email ou mot de passe incorrect. Utilisez les identifiants de démonstration.';
+                    errorMessage.classList.add('show');
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'Se connecter';
+                }
+            }, 500);
+        });
+
+        // Vérifier l'authentification au chargement
+        checkAuth();
+    </script>
+</body>
+
+</html>
+

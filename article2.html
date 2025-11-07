@@ -327,6 +327,7 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="./auth.js" defer></script>
 </head>
 
 <body>
@@ -337,7 +338,7 @@
             </a>
             <div class="nav-right">
                 <a href="#subscribe" class="nav-btn-subscribe">s'abonner</a>
-                <a href="#login" class="nav-btn-login"><i class="far fa-user"></i> Se connecter</a>
+                <a href="./login.html" class="nav-btn-login"><i class="far fa-user"></i> Se connecter</a>
             </div>
         </div>
     </nav>
@@ -778,6 +779,42 @@
                 console.error('Erreur lors du chargement de la carte:', error);
             });
     </script>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-brand-logo">
+                    <img src="./LOGO-SPORT-AREA-V2.png" alt="Sport Area">
+                </div>
+                <div class="footer-slogan">C'EST LA PASSION QUI PARLE</div>
+            </div>
+
+            <div class="footer-social">
+                <a href="#" class="social-icon" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="RSS">
+                    <i class="fas fa-rss"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="Email">
+                    <i class="far fa-envelope"></i>
+                </a>
+            </div>
+
+            <div class="footer-apps">
+                <span class="footer-apps-title">APPLICATIONS MOBILES</span>
+                <a href="#" class="app-icon" aria-label="App Store">
+                    <i class="fab fa-apple"></i>
+                </a>
+                <a href="#" class="app-icon" aria-label="Google Play">
+                    <i class="fab fa-android"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>

@@ -203,6 +203,7 @@
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="./auth.js" defer></script>
 </head>
 
 <body>
@@ -213,7 +214,7 @@
             </a>
             <div class="nav-right">
                 <a href="#subscribe" class="nav-btn-subscribe">s'abonner</a>
-                <a href="#login" class="nav-btn-login"><i class="far fa-user"></i> Se connecter</a>
+                <a href="./login.html" class="nav-btn-login"><i class="far fa-user"></i> Se connecter</a>
             </div>
         </div>
     </nav>
@@ -378,7 +379,7 @@
         // Bar: ROI max (approximations hautes du tableau)
         const roiLabels = ['Football L1', 'Rugby', 'Basket', 'Handball', 'Tennis', 'Judo', 'Natation'];
         const roiMax = [1371, 626, 486, 211, 100, 52, 53];
-        
+
         // Couleurs personnalisées pour chaque sport avec dégradé
         const roiColors = [
             'linear-gradient(135deg, #d71900 0%, #ff4444 100%)', // Football - rouge intense
@@ -389,7 +390,7 @@
             'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)', // Judo - violet
             'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)'  // Natation - cyan
         ];
-        
+
         // Créer des gradients pour chaque barre
         const roiGradients = roiColors.map((grad, idx) => {
             const ctx = document.getElementById('barRoi').getContext('2d');
@@ -418,7 +419,7 @@
             }
             return gradient;
         });
-        
+
         const ctxBar = document.getElementById('barRoi');
         new Chart(ctxBar, {
             type: 'bar',
@@ -452,10 +453,10 @@
                         titleFont: { size: 14, weight: 'bold' },
                         bodyFont: { size: 13 },
                         callbacks: {
-                            label: function(context) {
+                            label: function (context) {
                                 return `ROI: ${context.parsed.y.toLocaleString('fr-FR')} € pour 1 € investi`;
                             },
-                            afterLabel: function(context) {
+                            afterLabel: function (context) {
                                 const index = context.dataIndex;
                                 const sport = roiLabels[index];
                                 if (sport === 'Football L1') {
@@ -482,7 +483,7 @@
                         ticks: {
                             color: '#6b7280',
                             font: { size: 11 },
-                            callback: function(value) {
+                            callback: function (value) {
                                 return value.toLocaleString('fr-FR') + ' €';
                             }
                         },
@@ -625,6 +626,42 @@
             }
         });
     </script>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-brand-logo">
+                    <img src="./LOGO-SPORT-AREA-V2.png" alt="Sport Area">
+                </div>
+                <div class="footer-slogan">C'EST LA PASSION QUI PARLE</div>
+            </div>
+
+            <div class="footer-social">
+                <a href="#" class="social-icon" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="RSS">
+                    <i class="fas fa-rss"></i>
+                </a>
+                <a href="#" class="social-icon" aria-label="Email">
+                    <i class="far fa-envelope"></i>
+                </a>
+            </div>
+
+            <div class="footer-apps">
+                <span class="footer-apps-title">APPLICATIONS MOBILES</span>
+                <a href="#" class="app-icon" aria-label="App Store">
+                    <i class="fab fa-apple"></i>
+                </a>
+                <a href="#" class="app-icon" aria-label="Google Play">
+                    <i class="fab fa-android"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>
