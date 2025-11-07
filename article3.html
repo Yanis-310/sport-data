@@ -61,6 +61,68 @@
             margin: 14px 0;
         }
 
+        .figure {
+            margin: 26px 0;
+            background: #fff;
+            border: 1px solid #edf2f7;
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .figure h3 {
+            margin: 6px 0 12px;
+            font-size: 1rem;
+            color: #1f2937;
+        }
+
+        .caption {
+            color: #6b7280;
+            font-size: .9rem;
+            margin-top: 8px;
+        }
+
+        .figure-footer {
+            text-align: center;
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #edf2f7;
+        }
+
+        #curve_chart,
+        #curve_chart2 {
+            width: 100%;
+            height: 500px;
+            margin: 20px 0;
+        }
+
+        .chart-info-box {
+            background: #fff8f6;
+            border-left: 4px solid #E67E22;
+            padding: 12px 16px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+        }
+
+        .chart-info-box h4 {
+            margin: 0 0 6px 0;
+            font-size: 0.9rem;
+            color: #1f2937;
+            font-weight: 700;
+        }
+
+        .chart-info-box p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+
+        .chart-info-box.red {
+            background: #fff5f5;
+            border-left-color: #dc2626;
+        }
+
         .author {
             margin-top: 40px;
             padding-top: 20px;
@@ -166,8 +228,14 @@
             .related-grid {
                 grid-template-columns: 1fr;
             }
+
+            #curve_chart,
+            #curve_chart2 {
+                height: 400px;
+            }
         }
     </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="./auth.js" defer></script>
 </head>
 
@@ -175,10 +243,10 @@
     <nav class="nav-topbar">
         <div class="nav-topbar-inner">
             <a href="./index.html" class="nav-logo">
-                <img src="/LOGO-SPORT-AREA-V2.png" alt="L'ÉQUIPE">
+                <img src="/LOGO-SPORT-AREA-V2.png" alt="Sport Area">
             </a>
             <div class="nav-right">
-                <a href="#subscribe" class="nav-btn-subscribe">s'abonner</a>
+                <a href="./subscription.html" class="nav-btn-subscribe">s'abonner</a>
                 <a href="./login.html" class="nav-btn-login"><i class="far fa-user"></i> Se connecter</a>
             </div>
         </div>
@@ -187,24 +255,68 @@
     <main class="article-page">
         <header>
             <div class="kicker">Santé</div>
-            <h1>La génération canapé: les jeunes bougeront-ils assez pour éviter le pire ?</h1>
+            <h1>La génération canapé : les jeunes bougeront-ils assez pour éviter le pire ?</h1>
             <p class="chapeau">Entre un scroll infini sur TikTok et des marathons Netflix, les jeunes transpirent
                 surtout… des pouces. L'OMS s'inquiète: 73 % des 11-17 ans ne bougent pas assez. Et spoiler: les trends
-                de danse tiktok ne remplacent pas une vraie séance de sport.</p>
+                de danse TikTok ne remplacent pas une vraie séance de sport.</p>
         </header>
 
         <section>
             <h2>73 % des jeunes en dessous du seuil recommandé</h2>
-            <p>Selon l'Organisation mondiale de la santé, 73 % des 11-17 ans n'atteignent pas les recommandations: 60
+            <p>Selon l'Organisation mondiale de la santé, 73 % des 11-17 ans n'atteignent pas les recommandations : 60
                 minutes d'activité modérée à soutenue par jour. Une situation préoccupante, d'autant plus que l'IMC des
                 enfants et adolescents ne cesse d'augmenter.</p>
 
-            <h2>Les causes: sédentarité et malbouffe Pro Max</h2>
+            <section class="figure">
+                <h3>Évolution de la prévalence de l'obésité chez les jeunes de 5 à 19 ans dans le monde (1990–2024)</h3>
+                <div class="chart-info-box">
+                    <h4>📊 Point clé</h4>
+                    <p>La prévalence de l'obésité a <strong>quintuplé</strong> en 34 ans : de <strong>4% en
+                            1990</strong> à <strong>21,1% en 2024</strong>. Une augmentation de <strong>+427%</strong>.
+                    </p>
+                </div>
+                <div id="curve_chart"></div>
+                <p class="caption">La prévalence de l'obésité chez les jeunes a plus que quintuplé depuis 1990, passant
+                    de 4 % à plus de 21 % en 2024. Cette tendance alarmante reflète l'impact de la sédentarité et des
+                    changements alimentaires.</p>
+                <div class="figure-footer">
+                    Sources : Organisation mondiale de la santé (OMS), Global Health Observatory Data Repository.<br>
+                    Consultations complémentaires : INJEP, Santé publique France (contexte français).
+                </div>
+            </section>
+
+            <h2>Les causes : sédentarité et malbouffe Pro Max</h2>
             <p>Entre écrans, réseaux sociaux et jeux vidéo, les loisirs des jeunes sont devenus sédentaires.
                 Aujourd'hui, ils optent plus volontiers pour les 60 Hz de leur écran que pour les 60 minutes d'activité
                 physique quotidienne recommandées. Faible activité physique et alimentation riche en sucres et en
                 graisses forment un cocktail explosif. Résultat : l'obésité infantile progresse, entraînant des risques
                 accrus de diabète, maladies cardiovasculaires et troubles psychologiques.</p>
+
+            <section class="figure">
+                <h3>Évolution du temps passé devant un écran chez les jeunes de 5 à 19 ans (heures/semaine)</h3>
+                <div class="chart-info-box red">
+                    <h4>🖥️ Point clé</h4>
+                    <p>Le temps d'écran a <strong>presque doublé</strong> en 16 ans : de <strong>18h/semaine en
+                            2006</strong> à <strong>35h/semaine en 2022</strong>. Soit <strong>+94%</strong>
+                        d'augmentation, l'équivalent de <strong>5 heures par jour</strong>.</p>
+                </div>
+                <div id="curve_chart2"></div>
+                <p class="caption">Le temps passé devant les écrans a presque doublé en moins de 20 ans, passant de 18
+                    heures par semaine en 2006 à 35 heures en 2022. Cette augmentation constante coïncide avec la
+                    progression de l'obésité infantile.</p>
+                <div class="figure-footer">
+                    Sources : Organisation mondiale de la santé (OMS), études sur l'usage des écrans chez les
+                    jeunes.<br>
+                    Consultations complétaires : INJEP, Santé publique France, rapports sur la sédentarité des jeunes.
+                </div>
+            </section>
+
+            <h2>Conclusion</h2>
+            <p>Il est urgent d'inverser la tendance. Les jeunes doivent apprendre à déconnecter pour mieux se
+                reconnecter
+                à leur corps. Marcher, courir, faire du sport entre amis ou simplement bouger un peu plus chaque jour :
+                autant de gestes simples qui peuvent faire la différence. Car bouger plus, c'est non seulement préserver
+                sa santé, mais aussi son équilibre mental et social.</p>
         </section>
 
         <div class="author">
@@ -279,6 +391,243 @@
         </div>
     </footer>
 
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawCharts);
+
+        function drawCharts() {
+            // Graphique 1 : Évolution de l'obésité
+            var data1 = new google.visualization.DataTable();
+            data1.addColumn('string', 'Année');
+            data1.addColumn('number', 'Prévalence de l\'obésité (%)');
+            data1.addColumn({ type: 'string', role: 'annotation' });
+            data1.addColumn({ type: 'string', role: 'tooltip', p: { html: true } });
+
+            var obesityData = [
+                ['1990', 4, null, '<div style="padding:12px;border-radius:8px;background:#fff8f6;border:2px solid #E67E22;font-family:Arial;color:#1f2937;min-width:200px;"><div style="font-size:20px;margin-bottom:6px;">📊</div><div style="font-weight:700;font-size:16px;color:#E67E22;margin-bottom:4px;">1990</div><div style="font-size:14px;color:#4a5568;">4,0% de prévalence</div></div>'],
+                ['1991', 4.4, null, null],
+                ['1992', 4.8, null, null],
+                ['1993', 5.2, null, null],
+                ['1994', 5.5, null, null],
+                ['1995', 5.9, null, null],
+                ['1996', 6.3, null, null],
+                ['1997', 6.8, null, null],
+                ['1998', 7.2, null, null],
+                ['1999', 7.6, null, null],
+                ['2000', 8.0, null, '<div style="padding:12px;border-radius:8px;background:#fff8f6;border:2px solid #E67E22;font-family:Arial;color:#1f2937;min-width:200px;"><div style="font-size:20px;margin-bottom:6px;">📊</div><div style="font-weight:700;font-size:16px;color:#E67E22;margin-bottom:4px;">2000</div><div style="font-size:14px;color:#4a5568;">8,0% de prévalence<br><span style="color:#6b7280;font-size:12px;">Doublement en 10 ans</span></div></div>'],
+                ['2002', 9.0, null, null],
+                ['2004', 10.2, null, null],
+                ['2006', 11.5, null, null],
+                ['2008', 12.8, null, null],
+                ['2010', 14.2, null, '<div style="padding:12px;border-radius:8px;background:#fff8f6;border:2px solid #E67E22;font-family:Arial;color:#1f2937;min-width:200px;"><div style="font-size:20px;margin-bottom:6px;">📊</div><div style="font-weight:700;font-size:16px;color:#E67E22;margin-bottom:4px;">2010</div><div style="font-size:14px;color:#4a5568;">14,2% de prévalence<br><span style="color:#6b7280;font-size:12px;">Triplement depuis 1990</span></div></div>'],
+                ['2012', 15.6, null, null],
+                ['2014', 17.0, null, null],
+                ['2016', 18.3, null, null],
+                ['2018', 19.2, null, null],
+                ['2020', 19.8, null, null],
+                ['2022', 20.5, null, null],
+                ['2024', 21.1, 'Prévalence de l\'obésité (%)', '<div style="padding:12px;border-radius:8px;background:#fff8f6;border:2px solid #E67E22;font-family:Arial;color:#1f2937;min-width:200px;"><div style="font-size:20px;margin-bottom:6px;">📊</div><div style="font-weight:700;font-size:16px;color:#E67E22;margin-bottom:4px;">2024</div><div style="font-size:14px;color:#4a5568;">21,1% de prévalence<br><span style="color:#dc2626;font-size:12px;font-weight:700;">+427% depuis 1990</span></div></div>']
+            ];
+
+            obesityData.forEach(function (row) {
+                data1.addRow(row);
+            });
+
+            var options1 = {
+                title: '',
+                titleTextStyle: {
+                    fontSize: 18,
+                    bold: true,
+                    color: '#1F2D3D'
+                },
+                animation: {
+                    startup: true,
+                    duration: 1500,
+                    easing: 'out'
+                },
+                curveType: 'function',
+                legend: 'none',
+                colors: ['#E67E22'],
+                lineWidth: 5,
+                pointSize: 8,
+                pointShape: 'circle',
+                pointHoverSize: 12,
+                areaOpacity: 0.25,
+                backgroundColor: {
+                    fill: 'transparent',
+                    stroke: '#e5e7eb',
+                    strokeWidth: 1
+                },
+                chartArea: {
+                    left: '12%',
+                    top: '10%',
+                    width: '82%',
+                    height: '75%'
+                },
+                annotations: {
+                    alwaysOutside: false,
+                    textStyle: {
+                        fontSize: 12,
+                        bold: true,
+                        color: '#E67E22',
+                        auraColor: 'white',
+                        auraWidth: 3
+                    }
+                },
+                hAxis: {
+                    title: 'Année',
+                    titleTextStyle: {
+                        fontSize: 13,
+                        bold: true,
+                        color: '#4a5568'
+                    },
+                    gridlines: {
+                        color: '#e5e7eb',
+                        count: 8
+                    },
+                    textStyle: {
+                        color: '#6b7280',
+                        fontSize: 11
+                    },
+                    minorGridlines: { color: '#f3f4f6' }
+                },
+                vAxis: {
+                    title: 'Prévalence (%)',
+                    minValue: 0,
+                    maxValue: 25,
+                    titleTextStyle: {
+                        fontSize: 13,
+                        bold: true,
+                        color: '#4a5568'
+                    },
+                    gridlines: {
+                        color: '#e5e7eb',
+                        count: 6
+                    },
+                    textStyle: {
+                        color: '#6b7280',
+                        fontSize: 11
+                    },
+                    format: '#.#',
+                    minorGridlines: { color: '#f3f4f6' }
+                },
+                tooltip: {
+                    isHtml: true,
+                    trigger: 'focus'
+                },
+                focusTarget: 'category',
+                enableInteractivity: true
+            };
+
+            var chart1 = new google.visualization.LineChart(document.getElementById('curve_chart'));
+            chart1.draw(data1, options1);
+
+            // Graphique 2 : Temps passé devant les écrans
+            var data2 = new google.visualization.DataTable();
+            data2.addColumn('string', 'Année');
+            data2.addColumn('number', 'Moyenne temps passé devant un écran chez les jeunes de 5 à 19 ans(heures/semaine)');
+            data2.addColumn({ type: 'string', role: 'tooltip', p: { html: true } });
+
+            data2.addRows([
+                ['2006', 18, '<div style="padding:12px;border-radius:8px;background:#fff5f5;border:2px solid #dc2626;font-family:Arial;color:#1f2937;min-width:200px;"><div style="font-size:20px;margin-bottom:6px;">🖥️</div><div style="font-weight:700;font-size:16px;color:#dc2626;margin-bottom:4px;">2006</div><div style="font-size:14px;color:#4a5568;">18 heures/semaine<br><span style="color:#6b7280;font-size:12px;">≈ 2,6h par jour</span></div></div>'],
+                ['2008', 20, '<div style="padding:12px;border-radius:8px;background:#fff5f5;border:2px solid #dc2626;font-family:Arial;color:#1f2937;min-width:200px;"><div style="font-size:20px;margin-bottom:6px;">🖥️</div><div style="font-weight:700;font-size:16px;color:#dc2626;margin-bottom:4px;">2008</div><div style="font-size:14px;color:#4a5568;">20 heures/semaine<br><span style="color:#6b7280;font-size:12px;">≈ 2,9h par jour</span></div></div>'],
+                ['2010', 22, '<div style="padding:12px;border-radius:8px;background:#fff5f5;border:2px solid #dc2626;font-family:Arial;color:#1f2937;min-width:200px;"><div style="font-size:20px;margin-bottom:6px;">🖥️</div><div style="font-weight:700;font-size:16px;color:#dc2626;margin-bottom:4px;">2010</div><div style="font-size:14px;color:#4a5568;">22 heures/semaine<br><span style="color:#6b7280;font-size:12px;">≈ 3,1h par jour</span></div></div>'],
+                ['2012', 23, '<div style="padding:12px;border-radius:8px;background:#fff5f5;border:2px solid #dc2626;font-family:Arial;color:#1f2937;min-width:200px;"><div style="font-size:20px;margin-bottom:6px;">🖥️</div><div style="font-weight:700;font-size:16px;color:#dc2626;margin-bottom:4px;">2012</div><div style="font-size:14px;color:#4a5568;">23 heures/semaine<br><span style="color:#6b7280;font-size:12px;">≈ 3,3h par jour</span></div></div>'],
+                ['2014', 25, '<div style="padding:12px;border-radius:8px;background:#fff5f5;border:2px solid #dc2626;font-family:Arial;color:#1f2937;min-width:200px;"><div style="font-size:20px;margin-bottom:6px;">🖥️</div><div style="font-weight:700;font-size:16px;color:#dc2626;margin-bottom:4px;">2014</div><div style="font-size:14px;color:#4a5568;">25 heures/semaine<br><span style="color:#6b7280;font-size:12px;">≈ 3,6h par jour</span></div></div>'],
+                ['2016', 26, '<div style="padding:12px;border-radius:8px;background:#fff5f5;border:2px solid #dc2626;font-family:Arial;color:#1f2937;min-width:200px;"><div style="font-size:20px;margin-bottom:6px;">🖥️</div><div style="font-weight:700;font-size:16px;color:#dc2626;margin-bottom:4px;">2016</div><div style="font-size:14px;color:#4a5568;">26 heures/semaine<br><span style="color:#6b7280;font-size:12px;">≈ 3,7h par jour</span></div></div>'],
+                ['2018', 27, '<div style="padding:12px;border-radius:8px;background:#fff5f5;border:2px solid #dc2626;font-family:Arial;color:#1f2937;min-width:200px;"><div style="font-size:20px;margin-bottom:6px;">🖥️</div><div style="font-weight:700;font-size:16px;color:#dc2626;margin-bottom:4px;">2018</div><div style="font-size:14px;color:#4a5568;">27 heures/semaine<br><span style="color:#6b7280;font-size:12px;">≈ 3,9h par jour</span></div></div>'],
+                ['2020', 29, '<div style="padding:12px;border-radius:8px;background:#fff5f5;border:2px solid #dc2626;font-family:Arial;color:#1f2937;min-width:200px;"><div style="font-size:20px;margin-bottom:6px;">🖥️</div><div style="font-weight:700;font-size:16px;color:#dc2626;margin-bottom:4px;">2020</div><div style="font-size:14px;color:#4a5568;">29 heures/semaine<br><span style="color:#6b7280;font-size:12px;">≈ 4,1h par jour</span></div></div>'],
+                ['2022', 35, '<div style="padding:12px;border-radius:8px;background:#fff5f5;border:2px solid #dc2626;font-family:Arial;color:#1f2937;min-width:200px;"><div style="font-size:20px;margin-bottom:6px;">🖥️</div><div style="font-weight:700;font-size:16px;color:#dc2626;margin-bottom:4px;">2022</div><div style="font-size:14px;color:#4a5568;">35 heures/semaine<br><span style="color:#6b7280;font-size:12px;">≈ 5h par jour</span></div></div>']
+            ]);
+
+            var options2 = {
+                title: '',
+                titleTextStyle: {
+                    fontSize: 18,
+                    bold: true,
+                    color: '#dc2626'
+                },
+                animation: {
+                    startup: true,
+                    duration: 1500,
+                    easing: 'out'
+                },
+                curveType: 'function',
+                legend: {
+                    position: 'none'
+                },
+                colors: ['#dc2626'],
+                pointSize: 10,
+                pointHoverSize: 14,
+                pointShape: 'circle',
+                lineWidth: 4,
+                areaOpacity: 0.2,
+                backgroundColor: {
+                    fill: 'transparent',
+                    stroke: '#e5e7eb',
+                    strokeWidth: 1
+                },
+                chartArea: {
+                    left: '12%',
+                    top: '10%',
+                    width: '82%',
+                    height: '75%'
+                },
+                hAxis: {
+                    title: 'Année',
+                    titleTextStyle: {
+                        fontSize: 13,
+                        bold: true,
+                        color: '#4a5568'
+                    },
+                    textStyle: {
+                        fontSize: 11,
+                        color: '#6b7280'
+                    },
+                    gridlines: {
+                        color: '#e5e7eb',
+                        count: 5
+                    },
+                    minorGridlines: { color: '#f3f4f6' }
+                },
+                vAxis: {
+                    title: 'Heures par semaine',
+                    minValue: 0,
+                    maxValue: 40,
+                    titleTextStyle: {
+                        fontSize: 13,
+                        bold: true,
+                        color: '#4a5568'
+                    },
+                    textStyle: {
+                        fontSize: 11,
+                        color: '#6b7280'
+                    },
+                    gridlines: {
+                        color: '#e5e7eb',
+                        count: 5
+                    },
+                    format: '#',
+                    minorGridlines: { color: '#f3f4f6' }
+                },
+                tooltip: {
+                    isHtml: true,
+                    trigger: 'focus'
+                },
+                focusTarget: 'category',
+                enableInteractivity: true
+            };
+
+            var chart2 = new google.visualization.LineChart(document.getElementById('curve_chart2'));
+            chart2.draw(data2, options2);
+
+            // Redimensionner les graphiques lors du redimensionnement de la fenêtre
+            window.addEventListener('resize', function () {
+                chart1.draw(data1, options1);
+                chart2.draw(data2, options2);
+            });
+        }
+    </script>
 </body>
 
 </html>

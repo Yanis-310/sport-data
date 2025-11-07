@@ -140,7 +140,7 @@
                 <img src="/LOGO-SPORT-AREA-V2.png" alt="Sport Area">
             </a>
             <div class="nav-right">
-                <a href="./index.html#subscribe" class="nav-btn-subscribe">s'abonner</a>
+                <a href="./subscription.html" class="nav-btn-subscribe">s'abonner</a>
                 <a href="./login.html" class="nav-btn-login"><i class="far fa-user"></i> Se connecter</a>
             </div>
         </div>
@@ -177,7 +177,7 @@
         </form>
 
         <div class="register-link">
-            Pas encore de compte ? <a href="#" onclick="alert('Fonctionnalité à venir !'); return false;">Créer un compte</a>
+            Pas encore de compte ? <a href="./register.html">Créer un compte</a>
         </div>
     </div>
 
@@ -190,7 +190,8 @@
         // Compte de démonstration
         const demoAccount = {
             email: 'demo@sportarea.fr',
-            password: 'demo123'
+            password: 'demo123',
+            name: 'Utilisateur Demo'
         };
 
         // Vérifier si l'utilisateur est déjà connecté
@@ -201,25 +202,46 @@
             }
         }
 
+        // Obtenir tous les comptes enregistrés
+        function getAccounts() {
+            const accounts = localStorage.getItem('sportAreaAccounts');
+            return accounts ? JSON.parse(accounts) : [];
+        }
+
         // Fonction de connexion
         function login(email, password) {
-            // Vérification simple (en production, cela serait fait côté serveur)
+            // Vérifier le compte de démonstration
             if (email === demoAccount.email && password === demoAccount.password) {
                 const userData = {
                     email: email,
-                    name: 'Utilisateur Demo',
+                    name: demoAccount.name,
                     loginTime: new Date().toISOString()
                 };
                 localStorage.setItem('sportAreaUser', JSON.stringify(userData));
                 return true;
             }
+
+            // Vérifier les comptes créés
+            const accounts = getAccounts();
+            const account = accounts.find(acc => acc.email === email && acc.password === password);
+
+            if (account) {
+                const userData = {
+                    email: account.email,
+                    name: account.name,
+                    loginTime: new Date().toISOString()
+                };
+                localStorage.setItem('sportAreaUser', JSON.stringify(userData));
+                return true;
+            }
+
             return false;
         }
 
         // Gestion du formulaire
-        loginForm.addEventListener('submit', function(e) {
+        loginForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            
+
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
@@ -234,7 +256,7 @@
                     window.location.href = './index.html';
                 } else {
                     // Afficher l'erreur
-                    errorMessage.textContent = 'Email ou mot de passe incorrect. Utilisez les identifiants de démonstration.';
+                    errorMessage.textContent = 'Email ou mot de passe incorrect. Vérifiez vos identifiants ou créez un compte.';
                     errorMessage.classList.add('show');
                     loginBtn.disabled = false;
                     loginBtn.textContent = 'Se connecter';
@@ -248,4 +270,3 @@
 </body>
 
 </html>
-

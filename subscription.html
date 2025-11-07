@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S'abonner - Sport Area</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link href="./style.css" rel="stylesheet">
+    <style>
+        .subscription-container {
+            max-width: 900px;
+            margin: 120px auto 60px;
+            padding: 40px 20px;
+        }
+
+        .subscription-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .subscription-header h1 {
+            font-size: 2.5rem;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .subscription-header p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .plan-card {
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .plan-card.recommended {
+            border-color: #d71900;
+            background: linear-gradient(135deg, #fff 0%, #fff5f5 100%);
+        }
+
+        .plan-badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: #d71900;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .plan-price {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #d71900;
+            margin: 20px 0;
+        }
+
+        .plan-price span {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .plan-features li {
+            padding: 10px 0;
+            color: #4b5563;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .plan-features li i {
+            color: #22c55e;
+            font-size: 1.1rem;
+        }
+
+        .plan-btn {
+            width: 100%;
+            padding: 14px 24px;
+            background: #d71900;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+
+        .plan-btn:hover {
+            background: #b81500;
+        }
+
+        .plan-btn.secondary {
+            background: #ffffff;
+            color: #d71900;
+            border: 2px solid #d71900;
+        }
+
+        .plan-btn.secondary:hover {
+            background: #fff5f5;
+        }
+
+        .subscription-form-container {
+            background: #ffffff;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 40px;
+            margin-top: 50px;
+            display: none;
+        }
+
+        .subscription-form-container.show {
+            display: block;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h2 {
+            font-size: 1.8rem;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .subscription-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #d71900;
+        }
+
+        .form-group input.error {
+            border-color: #dc2626;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+            grid-column: 1 / -1;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+            grid-column: 1 / -1;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .submit-btn {
+            grid-column: 1 / -1;
+            padding: 14px 24px;
+            background: #d71900;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #b81500;
+        }
+
+        .submit-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .subscription-form {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="nav-topbar">
+        <div class="nav-topbar-inner">
+            <a href="./index.html" class="nav-logo">
+                <img src="/LOGO-SPORT-AREA-V2.png" alt="Sport Area">
+            </a>
+            <div class="nav-right">
+                <a href="./subscription.html" class="nav-btn-subscribe">s'abonner</a>
+                <a href="./login.html" class="nav-btn-login"><i class="far fa-user"></i> Se connecter</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="subscription-container">
+        <div class="subscription-header">
+            <h1>Choisissez votre abonnement</h1>
+            <p>Accédez à tout le contenu premium de Sport Area</p>
+        </div>
+
+        <div class="plans-grid">
+            <div class="plan-card">
+                <div class="plan-name">Essentiel</div>
+                <div class="plan-price">9,99€<span>/mois</span></div>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> Accès à tous les articles</li>
+                    <li><i class="fas fa-check"></i> Analyses approfondies</li>
+                    <li><i class="fas fa-check"></i> Graphiques interactifs</li>
+                    <li><i class="fas fa-check"></i> Support email</li>
+                </ul>
+                <button class="plan-btn secondary" onclick="selectPlan('essentiel', 9.99)">Choisir ce plan</button>
+            </div>
+
+            <div class="plan-card recommended">
+                <div class="plan-badge">Populaire</div>
+                <div class="plan-name">Premium</div>
+                <div class="plan-price">19,99€<span>/mois</span></div>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> Tout Essentiel</li>
+                    <li><i class="fas fa-check"></i> Contenu exclusif</li>
+                    <li><i class="fas fa-check"></i> Analyses en avant-première</li>
+                    <li><i class="fas fa-check"></i> Application mobile</li>
+                    <li><i class="fas fa-check"></i> Support prioritaire</li>
+                </ul>
+                <button class="plan-btn" onclick="selectPlan('premium', 19.99)">Choisir ce plan</button>
+            </div>
+
+            <div class="plan-card">
+                <div class="plan-name">Pro</div>
+                <div class="plan-price">39,99€<span>/mois</span></div>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> Tout Premium</li>
+                    <li><i class="fas fa-check"></i> Accès VIP aux événements</li>
+                    <li><i class="fas fa-check"></i> Webinaires exclusifs</li>
+                    <li><i class="fas fa-check"></i> Données brutes téléchargeables</li>
+                    <li><i class="fas fa-check"></i> Support dédié 24/7</li>
+                </ul>
+                <button class="plan-btn secondary" onclick="selectPlan('pro', 39.99)">Choisir ce plan</button>
+            </div>
+        </div>
+
+        <div class="subscription-form-container" id="subscriptionForm">
+            <div class="form-header">
+                <h2 id="selectedPlanName">Finaliser votre abonnement</h2>
+                <p id="selectedPlanPrice"></p>
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+
+            <form class="subscription-form" id="subscriptionFormElement">
+                <input type="hidden" id="planType" name="planType">
+                <input type="hidden" id="planPrice" name="planPrice">
+
+                <div class="form-group">
+                    <label for="firstName">Prénom</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Nom</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="cardNumber">Numéro de carte</label>
+                    <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456"
+                        maxlength="19" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="expiryDate">Date d'expiration</label>
+                    <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/AA" maxlength="5" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="3" required>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="billingAddress">Adresse de facturation</label>
+                    <input type="text" id="billingAddress" name="billingAddress" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="city">Ville</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="postalCode">Code postal</label>
+                    <input type="text" id="postalCode" name="postalCode" required>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="country">Pays</label>
+                    <select id="country" name="country" required>
+                        <option value="">Sélectionner un pays</option>
+                        <option value="FR">France</option>
+                        <option value="BE">Belgique</option>
+                        <option value="CH">Suisse</option>
+                        <option value="CA">Canada</option>
+                        <option value="other">Autre</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    Confirmer l'abonnement
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="./auth.js" defer></script>
+    <script>
+        let selectedPlan = null;
+        let selectedPrice = null;
+
+        // Sélectionner un plan
+        function selectPlan(plan, price) {
+            selectedPlan = plan;
+            selectedPrice = price;
+
+            // Mettre à jour le formulaire
+            document.getElementById('planType').value = plan;
+            document.getElementById('planPrice').value = price;
+
+            const planNames = {
+                'essentiel': 'Abonnement Essentiel',
+                'premium': 'Abonnement Premium',
+                'pro': 'Abonnement Pro'
+            };
+
+            document.getElementById('selectedPlanName').textContent = planNames[plan];
+            document.getElementById('selectedPlanPrice').textContent = `${price}€ / mois`;
+
+            // Afficher le formulaire
+            document.getElementById('subscriptionForm').classList.add('show');
+            document.getElementById('subscriptionForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Pré-remplir l'email si l'utilisateur est connecté
+            const user = window.auth ? window.auth.getUser() : null;
+            if (user) {
+                document.getElementById('email').value = user.email;
+            }
+        }
+
+        // Formatage du numéro de carte
+        document.getElementById('cardNumber').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+
+        // Formatage de la date d'expiration
+        document.getElementById('expiryDate').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+
+        // Validation CVV (chiffres uniquement)
+        document.getElementById('cvv').addEventListener('input', function (e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+
+        // Gestion du formulaire
+        document.getElementById('subscriptionFormElement').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Réinitialiser les messages
+            errorMessage.classList.remove('show');
+            successMessage.classList.remove('show');
+            document.querySelectorAll('.form-group input').forEach(input => {
+                input.classList.remove('error');
+            });
+
+            // Validation
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            if (cardNumber.length < 13 || cardNumber.length > 19) {
+                showError('Numéro de carte invalide.');
+                document.getElementById('cardNumber').classList.add('error');
+                return;
+            }
+
+            const expiryDate = document.getElementById('expiryDate').value;
+            if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
+                showError('Date d\'expiration invalide (format MM/AA).');
+                document.getElementById('expiryDate').classList.add('error');
+                return;
+            }
+
+            const cvv = document.getElementById('cvv').value;
+            if (cvv.length < 3) {
+                showError('CVV invalide.');
+                document.getElementById('cvv').classList.add('error');
+                return;
+            }
+
+            // Désactiver le bouton
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Traitement...';
+
+            // Simuler le traitement du paiement
+            setTimeout(() => {
+                // Sauvegarder l'abonnement
+                const subscriptionData = {
+                    plan: selectedPlan,
+                    price: selectedPrice,
+                    email: document.getElementById('email').value,
+                    name: document.getElementById('firstName').value + ' ' + document.getElementById('lastName').value,
+                    startDate: new Date().toISOString(),
+                    status: 'active'
+                };
+
+                // Sauvegarder dans localStorage
+                const subscriptions = JSON.parse(localStorage.getItem('sportAreaSubscriptions') || '[]');
+                subscriptions.push(subscriptionData);
+                localStorage.setItem('sportAreaSubscriptions', JSON.stringify(subscriptions));
+
+                // Mettre à jour l'utilisateur si connecté
+                const user = window.auth ? window.auth.getUser() : null;
+                if (user) {
+                    user.subscription = subscriptionData;
+                    localStorage.setItem('sportAreaUser', JSON.stringify(user));
+                }
+
+                // Afficher le succès
+                successMessage.textContent = 'Abonnement confirmé ! Merci pour votre confiance.';
+                successMessage.classList.add('show');
+
+                // Redirection après 2 secondes
+                setTimeout(() => {
+                    window.location.href = './index.html';
+                }, 2000);
+            }, 1500);
+        });
+
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = message;
+            errorMessage.classList.add('show');
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('submitBtn').textContent = 'Confirmer l\'abonnement';
+        }
+    </script>
+</body>
+
+</html>
