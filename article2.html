@@ -86,6 +86,36 @@
             width: 100%;
             height: 600px;
             margin: 20px 0;
+            position: relative;
+        }
+
+        .chart-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .chart-info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .chart-info-label {
+            font-size: 0.85rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .chart-info-value {
+            font-size: 1.1rem;
+            color: #1f2937;
+            font-weight: 700;
         }
 
         #map {
@@ -268,6 +298,16 @@
             #map {
                 height: 500px;
             }
+
+            .chart-info {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+
+            .chart-info-item {
+                width: 100%;
+            }
         }
 
         @media (max-width: 640px) {
@@ -392,74 +432,201 @@
         google.charts.setOnLoadCallback(drawChart);
 
         function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-                ['Région', 'Jeunes licenciés', 'Centres de formation certifiés FFF', { role: 'annotation' }],
-                ['Hauts-de-France', 190000, 5, '5'],
-                ['Occitanie', 170000, 4, '4'],
-                ['Bretagne', 130000, 3, '3'],
-                ['Auvergne-Rhône-Alpes', 200000, 5, '5'],
-                ['Nouvelle-Aquitaine', 180000, 4, '4'],
-                ['Pays de la Loire', 140000, 3, '3'],
-                ['Île-de-France', 300000, 6, '6'],
-                ['Provence-Alpes-Côte d\'Azur', 150000, 3, '3'],
-                ['Normandie', 110000, 2, '2'],
-                ['Grand Est', 160000, 3, '3'],
-                ['Centre-Val de Loire', 60000, 1, '1'],
-                ['Bourgogne-Franche-Comté', 70000, 1, '1']
-            ]);
+            var rawData = [
+                ['Hauts-de-France', 190000, 5],
+                ['Occitanie', 170000, 4],
+                ['Bretagne', 130000, 3],
+                ['Auvergne-Rhône-Alpes', 200000, 5],
+                ['Nouvelle-Aquitaine', 180000, 4],
+                ['Pays de la Loire', 140000, 3],
+                ['Île-de-France', 300000, 6],
+                ['Provence-Alpes-Côte d\'Azur', 150000, 3],
+                ['Normandie', 110000, 2],
+                ['Grand Est', 160000, 3],
+                ['Centre-Val de Loire', 60000, 1],
+                ['Bourgogne-Franche-Comté', 70000, 1]
+            ];
+
+            // Calculer les totaux et ratios
+            var totalLicenciés = rawData.reduce(function (sum, row) { return sum + row[1]; }, 0);
+            var totalCentres = rawData.reduce(function (sum, row) { return sum + row[2]; }, 0);
+            var ratioMoyen = Math.round(totalLicenciés / totalCentres);
+
+            // Créer les données avec annotations améliorées
+            var dataRows = rawData.map(function (row) {
+                var ratio = Math.round(row[1] / row[2]);
+                return [
+                    row[0],
+                    row[1],
+                    row[2],
+                    row[2] + ' centres', // Annotation pour les centres
+                    ratio + ' licenciés/centre' // Annotation pour le ratio
+                ];
+            });
+
+            // Construire le tableau de données
+            var dataArray = [
+                ['Région', 'Jeunes licenciés', 'Centres de formation', { role: 'annotation', type: 'string' }, { role: 'tooltip', type: 'string' }]
+            ];
+
+            dataRows.forEach(function (row) {
+                dataArray.push([
+                    row[0],
+                    row[1],
+                    row[2],
+                    row[3],
+                    row[0] + '\\n' +
+                    'Jeunes licenciés: ' + row[1].toLocaleString('fr-FR') + '\\n' +
+                    'Centres de formation: ' + row[2] + '\\n' +
+                    'Ratio: ' + row[4]
+                ]);
+            });
+
+            var data = google.visualization.arrayToDataTable(dataArray);
 
             var options = {
-                title: 'Jeunes licenciés FFF et centres de formation certifiés FFF par région (2023)',
+                title: '',
                 titleTextStyle: { fontSize: 18, bold: true, color: '#1f2937' },
+                animation: {
+                    startup: true,
+                    duration: 1000,
+                    easing: 'out'
+                },
                 series: {
                     0: {
                         targetAxisIndex: 0,
-                        color: '#3b82f6'
+                        color: '#3b82f6',
+                        type: 'bars'
                     },
                     1: {
                         targetAxisIndex: 1,
-                        color: '#d71900'
+                        color: '#d71900',
+                        type: 'bars'
                     }
                 },
                 vAxes: {
                     0: {
                         title: 'Jeunes licenciés',
                         minValue: 0,
-                        titleTextStyle: { bold: true, color: '#4a5568' },
-                        textStyle: { color: '#6b7280' }
+                        format: 'short',
+                        titleTextStyle: {
+                            bold: true,
+                            color: '#3b82f6',
+                            fontSize: 13
+                        },
+                        textStyle: {
+                            color: '#6b7280',
+                            fontSize: 11
+                        },
+                        gridlines: {
+                            color: '#e5e7eb',
+                            count: 6
+                        }
                     },
                     1: {
-                        title: 'Centres de formation certifiés FFF',
+                        title: 'Centres de formation',
                         minValue: 0,
-                        titleTextStyle: { bold: true, color: '#4a5568' },
-                        textStyle: { color: '#6b7280' }
+                        maxValue: 7,
+                        titleTextStyle: {
+                            bold: true,
+                            color: '#d71900',
+                            fontSize: 13
+                        },
+                        textStyle: {
+                            color: '#6b7280',
+                            fontSize: 11
+                        },
+                        gridlines: {
+                            color: 'transparent'
+                        }
                     }
                 },
                 hAxis: {
                     title: 'Régions',
-                    titleTextStyle: { bold: true, color: '#4a5568' },
-                    textStyle: { color: '#6b7280' },
+                    titleTextStyle: {
+                        bold: true,
+                        color: '#4a5568',
+                        fontSize: 13
+                    },
+                    textStyle: {
+                        color: '#6b7280',
+                        fontSize: 11
+                    },
                     slantedText: true,
-                    slantedTextAngle: 45
+                    slantedTextAngle: 45,
+                    gridlines: {
+                        color: 'transparent'
+                    }
                 },
                 legend: {
                     position: 'top',
-                    textStyle: { color: '#4a5568' }
+                    alignment: 'center',
+                    textStyle: {
+                        color: '#4a5568',
+                        fontSize: 12,
+                        bold: true
+                    }
                 },
-                bar: { groupWidth: '60%' },
-                annotations: { alwaysOutside: true },
-                backgroundColor: 'transparent',
+                bar: {
+                    groupWidth: '65%'
+                },
+                annotations: {
+                    alwaysOutside: false,
+                    textStyle: {
+                        fontSize: 11,
+                        bold: true,
+                        color: '#1f2937',
+                        auraColor: 'white',
+                        auraWidth: 2
+                    }
+                },
+                tooltip: {
+                    textStyle: {
+                        fontSize: 12,
+                        color: '#1f2937'
+                    },
+                    trigger: 'focus',
+                    isHtml: true
+                },
+                backgroundColor: {
+                    fill: 'transparent',
+                    stroke: '#e5e7eb',
+                    strokeWidth: 1
+                },
                 chartArea: {
-                    left: 100,
-                    top: 80,
-                    right: 100,
-                    bottom: 120,
+                    left: 110,
+                    top: 60,
+                    right: 80,
+                    bottom: 140,
                     width: '100%',
                     height: '70%'
-                }
+                },
+                focusTarget: 'category',
+                enableInteractivity: true
             };
 
-            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            // Ajouter les informations en haut du graphique avant de le dessiner
+            var chartContainer = document.getElementById('chart_div');
+            var parentContainer = chartContainer.parentNode;
+            var infoDiv = document.createElement('div');
+            infoDiv.className = 'chart-info';
+            infoDiv.innerHTML = `
+                <div class="chart-info-item">
+                    <span class="chart-info-label">Total jeunes licenciés</span>
+                    <span class="chart-info-value" style="color: #3b82f6;">${totalLicenciés.toLocaleString('fr-FR')}</span>
+                </div>
+                <div class="chart-info-item">
+                    <span class="chart-info-label">Total centres de formation</span>
+                    <span class="chart-info-value" style="color: #d71900;">${totalCentres}</span>
+                </div>
+                <div class="chart-info-item">
+                    <span class="chart-info-label">Ratio moyen</span>
+                    <span class="chart-info-value" style="color: #1f2937;">${ratioMoyen.toLocaleString('fr-FR')} licenciés/centre</span>
+                </div>
+            `;
+            parentContainer.insertBefore(infoDiv, chartContainer);
+
+            var chart = new google.visualization.ColumnChart(chartContainer);
             chart.draw(data, options);
 
             // Redimensionner le graphique lors du redimensionnement de la fenêtre
